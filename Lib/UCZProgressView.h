@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM (NSUInteger, ProgressViewPosition) {
+    center = 0,
+    topRight,
+    topLeft,
+    bottomRight,
+    bottomLeft
+};
+
+
 IB_DESIGNABLE
 
 @interface UCZProgressView : UIView
@@ -27,7 +36,8 @@ IB_DESIGNABLE
 
 @property (nonatomic) UIBlurEffect *blurEffect NS_AVAILABLE_IOS(8_0); // UI_APPEARANCE_SELECTOR;
 @property (nonatomic) IBInspectable BOOL usesVibrancyEffect; // UI_APPEARANCE_SELECTOR;
-
+@property (nonatomic) IBInspectable ProgressViewPosition progressViewPosition;
+@property (nonatomic) IBInspectable CGFloat progressViewPadding;
 @property (nonatomic, copy) void(^animationDidStopBlock)();
 
 - (void)setProgress:(CGFloat)progress animated:(BOOL)animated;

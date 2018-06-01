@@ -43,7 +43,8 @@
     self.tintColor = [UIColor colorWithRed:181.0 / 255.0 green:182.0 / 255.0 blue:183.0 / 255.0 alpha:1.0];
     self.radius = 20.0;
     self.usesVibrancyEffect = YES;
-    
+    self.progressViewPosition = center;
+    self.progressViewPadding = 0.0;
     [self.backgroundLayer addSublayer:self.progressLayer];
     
     self.backgroundView = [self defaultBackgroundView];
@@ -59,7 +60,25 @@
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.lineCapStyle = kCGLineCapButt;
     path.lineWidth = self.lineWidth;
-    [path addArcWithCenter:self.backgroundView.center radius:self.radius + self.lineWidth / 2 startAngle:-M_PI_2 endAngle:M_PI + M_PI_2 clockwise:YES];
+    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    switch (_progressViewPosition) {
+        case topLeft:
+            center = CGPointMake(self.radius + _progressViewPadding, self.radius + _progressViewPadding);
+            break;
+        case topRight:
+            center = CGPointMake(self.frame.size.width - self.radius - _progressViewPadding, self.radius + _progressViewPadding);
+            break;
+        case bottomRight:
+            center = CGPointMake(self.frame.size.width - self.radius - _progressViewPadding , self.frame.size.height - self.radius - _progressViewPadding);
+
+            break;
+        case bottomLeft:
+            center = CGPointMake(self.radius + _progressViewPadding, self.frame.size.height - self.radius - _progressViewPadding);
+            break;
+        default:
+            break;
+    }
+    [path addArcWithCenter:center radius:self.radius + self.lineWidth / 2 startAngle:-M_PI_2 endAngle:M_PI + M_PI_2 clockwise:YES];
     
     self.progressLayer.path = path.CGPath;
     
@@ -102,6 +121,7 @@
 }
 
 - (CAShapeLayer *)progressLayer {
+    NSLog(@"progressLayer");
     if (!_progressLayer) {
         _progressLayer = [CAShapeLayer layer];
         _progressLayer.fillColor = [UIColor clearColor].CGColor;
